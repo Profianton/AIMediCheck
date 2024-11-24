@@ -14,14 +14,13 @@ def on():
 def off():
     GPIO.output(light_gpio, False)
 
+on()
 
 def light_needed(f):
     def wrapper(*args, **kwargs):
-        print("a")
         on()
         sleep(.1)
         out = f(*args, **kwargs)
         off()
-        print("b")
         return out
     return wrapper
