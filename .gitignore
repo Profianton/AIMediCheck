@@ -1,0 +1,17 @@
+__pycache__
+.cache
+.config
+.ipython
+.local
+.vscode
+Bookshelf
+Desktop
+Documents
+Downloads
+env
+Music
+Pictures
+Public
+Templates
+Videos
+.bash_history
