@@ -1,0 +1,17 @@
+import os
+from PIL import Image
+from picamera2 import Picamera2
+from libcamera import controls
+from light import light_needed
+os.environ["LIBCAMERA_LOG_LEVELS"] = "*:3"
+
+picam2 = Picamera2()
+picam2.start()
+picam2.set_controls({"AfMode": controls.AfModeEnum.Manual, "LensPosition": 11})
+
+
+@light_needed
+def capture():
+    image:Image.Image = picam2.capture_image("main")
+    image.crop((1000,120,3600,2592))
+    return image.convert('RGB')

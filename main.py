@@ -1,4 +1,6 @@
 from cam import capture
-
-
-capture().save("test.jpg")
+from glob import glob
+while True:
+    input("Ready")
+    path=f"images/{len(glob('images/*'))}.png"
+    capture().save(path)
