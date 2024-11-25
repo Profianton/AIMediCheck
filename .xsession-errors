@@ -1,0 +1,62 @@
+Xsession: X session started for profianton at Sun 24 Nov 18:43:57 CET 2024
+dbus-update-activation-environment: setting DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+xrdb: Can't open display ''
+xhost:  unable to open display ""
+
+Wi-Fi is currently blocked by rfkill.
+Use raspi-config to set the country before use.
+
+dbus-update-activation-environment: setting USER=profianton
+dbus-update-activation-environment: setting TEXTDOMAIN=Linux-PAM
+dbus-update-activation-environment: setting XDG_SESSION_TYPE=wayland
+dbus-update-activation-environment: setting HOME=/home/profianton
+dbus-update-activation-environment: setting DESKTOP_SESSION=LXDE-pi-labwc
+dbus-update-activation-environment: setting XDG_SEAT_PATH=/org/freedesktop/DisplayManager/Seat0
+dbus-update-activation-environment: setting DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+dbus-update-activation-environment: setting LOGNAME=profianton
+dbus-update-activation-environment: setting XDG_SESSION_CLASS=user
+dbus-update-activation-environment: setting PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games
+dbus-update-activation-environment: setting XDG_SESSION_PATH=/org/freedesktop/DisplayManager/Session0
+dbus-update-activation-environment: setting XDG_RUNTIME_DIR=/run/user/1000
+dbus-update-activation-environment: setting LANG=en_GB.UTF-8
+dbus-update-activation-environment: setting XDG_SESSION_DESKTOP=LXDE-pi-labwc
+dbus-update-activation-environment: setting XDG_GREETER_DATA_DIR=/var/lib/lightdm/data/profianton
+dbus-update-activation-environment: setting SHELL=/bin/bash
+dbus-update-activation-environment: setting GDMSESSION=LXDE-pi-labwc
+dbus-update-activation-environment: setting NO_AT_BRIDGE=1
+dbus-update-activation-environment: setting GPG_AGENT_INFO=/run/user/1000/gnupg/S.gpg-agent:0:1
+dbus-update-activation-environment: setting PWD=/home/profianton
+no profile matched
+Failure: No such entity
+pgrep: pgrep: pattern that searches for process name longer than 15 characters will result in zero matches
+Try `pgrep -f' option to match against the complete command line.pattern that searches for process name longer than 15 characters will result in zero matches
+Try `pgrep -f' option to match against the complete command line.
+
+
+(polkit-mate-authentication-agent-1:1205): GLib-CRITICAL **: 18:44:09.722: g_variant_new_string: assertion 'string != NULL' failed
+
+(polkit-mate-authentication-agent-1:1205): polkit-mate-1-WARNING **: 18:44:09.725: Failed to register client: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.gnome.SessionManager was not provided by any .service files
+II 24-11-24 18:44:11.197 - [src/panel/config/file.cpp:576] Reading XML configuration options from directory /usr/share/wf-panel-pi/metadata
+II 24-11-24 18:44:11.199 - [src/panel/config/file.cpp:589] Reading XML configuration options from file /usr/share/wf-panel-pi/metadata/cputemp.xml
+II 24-11-24 18:44:11.201 - [src/panel/config/file.cpp:589] Reading XML configuration options from file /usr/share/wf-panel-pi/metadata/gpu.xml
+II 24-11-24 18:44:11.202 - [src/panel/config/file.cpp:589] Reading XML configuration options from file /usr/share/wf-panel-pi/metadata/window-list.xml
+II 24-11-24 18:44:11.203 - [src/panel/config/file.cpp:589] Reading XML configuration options from file /usr/share/wf-panel-pi/metadata/notify.xml
+II 24-11-24 18:44:11.204 - [src/panel/config/file.cpp:589] Reading XML configuration options from file /usr/share/wf-panel-pi/metadata/smenu.xml
+II 24-11-24 18:44:11.206 - [src/panel/config/file.cpp:589] Reading XML configuration options from file /usr/share/wf-panel-pi/metadata/updater.xml
+II 24-11-24 18:44:11.207 - [src/panel/config/file.cpp:589] Reading XML configuration options from file /usr/share/wf-panel-pi/metadata/tray.xml
+II 24-11-24 18:44:11.208 - [src/panel/config/file.cpp:589] Reading XML configuration options from file /usr/share/wf-panel-pi/metadata/panel-pi.xml
+II 24-11-24 18:44:11.210 - [src/panel/config/file.cpp:589] Reading XML configuration options from file /usr/share/wf-panel-pi/metadata/clock.xml
+II 24-11-24 18:44:11.211 - [src/panel/config/file.cpp:589] Reading XML configuration options from file /usr/share/wf-panel-pi/metadata/ejecter.xml
+II 24-11-24 18:44:11.212 - [src/panel/config/file.cpp:589] Reading XML configuration options from file /usr/share/wf-panel-pi/metadata/launchers.xml
+II 24-11-24 18:44:11.214 - [src/panel/config/file.cpp:589] Reading XML configuration options from file /usr/share/wf-panel-pi/metadata/cpu.xml
+II 24-11-24 18:44:11.215 - [src/panel/config/file.cpp:589] Reading XML configuration options from file /usr/share/wf-panel-pi/metadata/batt.xml
+** Message: 18:44:16.073: batt: battery 0 not found
+** Message: 18:44:16.889: up: Checking for updates
+** Message: 18:44:25.645: up: Error updating cache - E: Release file for http://deb.debian.org/debian-security/dists/bookworm-security/InRelease is not valid yet (invalid for another 3h 8min 30s). Updates for this repository will not be applied.
+E: Release file for http://deb.debian.org/debian/dists/bookworm-updates/InRelease is not valid yet (invalid for another 20h 36min 19s). Updates for this repository will not be applied.
+E: Release file for http://archive.raspberrypi.com/debian/dists/bookworm/InRelease is not valid yet (invalid for another 17h 11min 35s). Updates for this repository will not be applied.
+
+/usr/share/system-config-printer/applet.py:366: Warning: Source ID 13 was not found when attempting to remove it
+  GLib.source_remove (self.timer)
+/usr/share/system-config-printer/applet.py:366: Warning: Source ID 19 was not found when attempting to remove it
+  GLib.source_remove (self.timer)
