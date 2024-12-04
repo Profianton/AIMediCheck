@@ -1,22 +1,10 @@
+from .ai import segment as segment_core
 from scipy.optimize import linear_sum_assignment
 import cv2
 from scipy.ndimage import binary_erosion, gaussian_filter
 import math
-import tensorflow
 import numpy as np
 from PIL import Image, ImageFilter
-
-model = tensorflow.saved_model.load('segment')
-classes = ["empty",  "pill", ]
-
-
-def segment_core(img):
-    img = img.resize((256, 256))
-    inp_numpy = np.array(img)[None]
-    inp = tensorflow.constant(inp_numpy, dtype='float32')
-
-    segmentation_output = model(inp)[0].numpy().argmax(-1)
-    return segmentation_output
 
 
 def segment(img: Image.Image):
