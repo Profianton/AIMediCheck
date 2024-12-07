@@ -1,17 +1,16 @@
 from .ai import segment as segment_core
 from scipy.optimize import linear_sum_assignment
 import cv2
-from scipy.ndimage import binary_erosion, gaussian_filter
+from scipy import ndimage
 import math
 import numpy as np
 from PIL import Image, ImageFilter
 
 
 def segment(img: Image.Image):
-    seg_img_array = segment_core(img).astype(np.uint8)
-    seg_img_array[seg_img_array != 0] = 255
+    seg_img_array = segment_core(img).astype(bool)
     seg_img_array = scale_array(seg_img_array, img.size[::-1])
-    seg_img = Image.fromarray(seg_img_array, "L")
+    seg_img = Image.fromarray(seg_img_array.astype(np.uint8)*255, "L")
     seg_img = seg_img.filter(ImageFilter.GaussianBlur(radius=20))
     seg_img_array = np.array(seg_img)
 
@@ -45,10 +44,9 @@ def minimum_weight_matching(points):
 
 
 def find_outline(arr):
-    eroded = binary_erosion(arr)
+    eroded = ndimage.binary_erosion(arr)
     outline = arr & ~eroded
     return outline
-
 
 def find_concave_points(image, radius=10):
     outline = find_outline(image)
@@ -69,10 +67,9 @@ def find_concave_points(image, radius=10):
         if angle < 140:
             concave_map[*coord] = True
 
-    concave_map = np.logical_and(gaussian_filter(
+    concave_map = np.logical_and(ndimage.gaussian_filter(
         concave_map.astype(float), 10).astype(bool), outline)
     return concave_map
-
 
 def draw_line(array, start, end, color,width):
     x0, y0 = start
@@ -95,7 +92,6 @@ def draw_line(array, start, end, color,width):
             err += dx
             y0 += sy
 
-
 def segment_and_disconnect(img: Image.Image):
     segmented = segment(img)
     seg_np = np.array(segmented).astype(bool)
@@ -115,6 +111,21 @@ def segment_and_disconnect(img: Image.Image):
 
     return Image.fromarray(seg_np.astype(np.uint8)*255, "L")
 
+def segment_and_separate(img:Image.Image):
+    segmented=segment_and_disconnect(img)
+    areas,num=ndimage.label(np.array(segmented).astype(bool))
+    imgs=[]
+    for i in range(1,num+1):
+        coords = np.argwhere(areas == i)
+        y_min, x_min = coords.min(axis=0)
+        y_max, x_max = coords.max(axis=0) + 1
+        img_arr=np.array(img)
+        img_arr[areas!=i]=0
+        out_img=Image.fromarray(img_arr)
+        out_img = out_img.crop((x_min, y_min, x_max, y_max))
+        
+        imgs.append(out_img)
+    return imgs
 
 def scale_array(arr, new_size):
     """
