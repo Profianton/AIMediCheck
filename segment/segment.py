@@ -106,7 +106,6 @@ def segment_and_disconnect(img: Image.Image):
         points.append(point)
     
     for a, b in minimum_weight_matching(points):
-        print(a,b)
         draw_line(seg_np, a[::-1], b[::-1], False, 2)
 
     return Image.fromarray(seg_np.astype(np.uint8)*255, "L")
@@ -122,9 +121,11 @@ def segment_and_separate(img:Image.Image):
         img_arr=np.array(img)
         img_arr[areas!=i]=0
         out_img=Image.fromarray(img_arr)
+        mask_img=Image.fromarray((areas==i).astype(np.uint8)*255,"L")
         out_img = out_img.crop((x_min, y_min, x_max, y_max))
+        mask_img = mask_img.crop((x_min, y_min, x_max, y_max))
         
-        imgs.append(out_img)
+        imgs.append((out_img,mask_img))
     return imgs
 
 def scale_array(arr, new_size):
