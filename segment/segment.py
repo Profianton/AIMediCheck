@@ -6,7 +6,6 @@ import math
 import numpy as np
 from PIL import Image, ImageFilter
 
-
 def segment(img: Image.Image):
     seg_img_array = segment_core(img).astype(bool)
     seg_img_array = scale_array(seg_img_array, img.size[::-1])
@@ -110,7 +109,15 @@ def segment_and_disconnect(img: Image.Image):
 
     return Image.fromarray(seg_np.astype(np.uint8)*255, "L")
 
-def segment_and_separate(img:Image.Image):
+def segment_and_separate(img:Image.Image)->list[tuple[Image.Image,Image.Image]]:
+    """
+
+    Args:
+        img (Image.Image): Image to be Segmented
+
+    Returns:
+        list[tuple[Image.Image,Image.Image]]: list of pills and their masks (list[tuple[Pill,Mask]])
+    """
     segmented=segment_and_disconnect(img)
     areas,num=ndimage.label(np.array(segmented).astype(bool))
     imgs=[]
@@ -137,9 +144,11 @@ def scale_array(arr, new_size):
     Returns:
         ndarray: The resized NumPy array.
     """
-    factors = tuple(old/new for new, old in zip(new_size, arr.shape))
 
-    def pixel(x, y):
-        return arr[int(x*factors[0]), int(y*factors[1])]
-    g = np.vectorize(pixel)
-    return np.fromfunction(g, new_size)
+    # factors = [old/new  for new, old in zip(new_size, arr.shape)]
+    # def pixel(x, y):
+    #     return arr[int(x*factors[0]), int(y*factors[1])]
+    # g = np.vectorize(pixel)
+    # return np.fromfunction(g, new_size)
+    factors = [new/old for new, old in zip(new_size, arr.shape)]
+    return ndimage.zoom(arr, factors,order=0)
