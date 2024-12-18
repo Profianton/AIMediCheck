@@ -1,0 +1,13 @@
+train: C:\Users\Anton\OneDrive - Hanns-Seidel-Gymnasium\Desktop\AImediCheck\yolov8\train
+val: C:\Users\Anton\OneDrive - Hanns-Seidel-Gymnasium\Desktop\AImediCheck\yolov8\valid
+test: C:\Users\Anton\OneDrive - Hanns-Seidel-Gymnasium\Desktop\AImediCheck\yolov8\test
+
+nc: 1
+names: ['Pill']
+
+roboflow:
+  workspace: pill-ervva
+  project: pills-xo2fe
+  version: 2
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/pill-ervva/pills-xo2fe/dataset/2
