@@ -1,4 +1,6 @@
 { "weiß": 0,
  "gelb_rund": 2,
  "pink": 1,
- "rot": 1 }
+ "rot": 1,
+ "gelb_transparent":0
+}
