@@ -1,14 +1,19 @@
+from PIL import Image
+import os
+os.environ["YOLO_VERBOSE"]="False"
 from ultralytics import YOLO
+import ultralytics
+ultralytics.checks()
 from PIL import Image
 import numpy as np
 from scipy import ndimage
 from bounding_box import bounding_box
-import ultralytics
-ultralytics.checks()
+
+
 
 
 # Load a model
-model = YOLO('segment_YOLO\YOLO_Pill.pt')  # load a pretrained model
+model = YOLO(r'segment_YOLO\YOLO_Pill.pt')  # load a pretrained model
 
 # img = Image.open(
 #     r'yolov8\test\images\23_png.rf.f870d8d75eedb53cf4da43018381364d.jpg')

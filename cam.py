@@ -2,7 +2,7 @@ import os
 from PIL import Image
 from picamera2 import Picamera2
 from libcamera import controls
-from light import light_needed
+#from light import light_needed
 os.environ["LIBCAMERA_LOG_LEVELS"] = "*:3"
 
 picam2 = Picamera2()

@@ -2,7 +2,7 @@ import numpy as np
 from glob import glob
 from PIL import Image
 from image_similarity_measures.quality_metrics import rmse
-
+import math
 
 
 imgs=glob("classify_data/*/*.png")
@@ -14,16 +14,20 @@ for img_path in imgs:
 def determine(img,options:list|None=None):
     if options == None:
         options=determine_dat.keys()
+    best_type,best_score=compare(img,rmse,options,0.006)
+    print(best_score,best_type)
+    return best_type
+
+def compare(img,func,options:list,max_score):
     best_type="unknown"
-    best_score=.006
+    best_score=max_score
     for test_type in options:
         if test_type not in determine_dat.keys():
             raise NotADirectoryError(f"{test_type} does not exist at \"classify_data/\".")
 
         for test_img in determine_dat[test_type]:
-            res=rmse(org_img=np.array(img), pred_img=np.array(test_img))
+            res=func(org_img=np.array(img), pred_img=np.array(test_img))
             if res<best_score:
                 best_type=test_type
                 best_score=res
-    print(best_score,best_type)
-    return best_type
+    return best_type,best_score

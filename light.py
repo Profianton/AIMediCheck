@@ -6,21 +6,16 @@ light_gpio = 26
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(light_gpio, GPIO.OUT)
 
+led = GPIO.PWM(light_gpio,100)
 
+high=100
 def on():
-    GPIO.output(light_gpio, True)
-
+    # GPIO.output(light_gpio, True)
+    led.start(high)
 
 def off():
-    GPIO.output(light_gpio, False)
+    # GPIO.output(light_gpio, False)
+    led.start(0)
+
 
 on()
-
-def light_needed(f):
-    def wrapper(*args, **kwargs):
-        on()
-        sleep(.1)
-        out = f(*args, **kwargs)
-        off()
-        return out
-    return wrapper
