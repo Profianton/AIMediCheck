@@ -8,7 +8,7 @@ os.environ["LIBCAMERA_LOG_LEVELS"] = "*:3"
 picam2 = Picamera2()
 capture_config = picam2.create_still_configuration()
 picam2.start()
-picam2.set_controls({"AfMode": controls.AfModeEnum.Manual, "LensPosition": 11})
+picam2.set_controls({"AfMode": controls.AfModeEnum.Manual, "LensPosition": 12})
 
 
 #@light_needed

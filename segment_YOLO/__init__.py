@@ -35,7 +35,16 @@ def segment_and_separate(img: Image.Image):
     for mask in results[0].masks.data:
         mask = np.array(mask)
         img_np = np.array(img)
-        mask = mask != 0
+        labeled_mask,num_features=ndimage.label(mask != 0)
+        best_value=0
+
+        for i in range(1,num_features+1):
+            value=np.sum((labeled_mask==i))
+            print(value)
+            if value > best_value:
+                best_value=value
+                best_i=i
+        mask=labeled_mask==best_i
         mask=scale_array(mask,img.size[::-1])
         img_np[np.logical_not(mask)] = [0, 0, 0]
         x_min, y_min, x_max, y_max = bounding_box(mask)

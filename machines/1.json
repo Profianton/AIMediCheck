@@ -1,0 +1,11 @@
+{
+	"tabletten": ["gelb_rund", "pink", "rot"],
+
+	"pläne": {
+		"morgens": {
+			"gelb_rund": 2,
+			"pink": 1,
+			"rot": 1
+		}
+	}
+}

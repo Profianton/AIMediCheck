@@ -1,21 +1,17 @@
-from time import sleep
+
 import RPi.GPIO as GPIO
-light_gpio = 26
+light_gpios = [13,26]
 
 
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(light_gpio, GPIO.OUT)
+GPIO.setup(light_gpios, GPIO.OUT)
 
-led = GPIO.PWM(light_gpio,100)
-
-high=100
 def on():
-    # GPIO.output(light_gpio, True)
-    led.start(high)
+    GPIO.output(light_gpios, True)
+        
 
 def off():
-    # GPIO.output(light_gpio, False)
-    led.start(0)
+    GPIO.output(light_gpios, False)
 
 
 on()
