@@ -4,13 +4,16 @@ from PIL import Image
 import io
 import json
 from analyse import analyse
+
 app = FastAPI()
 
 
-from starlette.responses import FileResponse 
+from starlette.responses import HTMLResponse 
+from fastapi.templating import Jinja2Templates
+templates = Jinja2Templates(directory="templates")
 
 
-def read_user(mid):
+def read_machine(mid):
     try:
         with open(f"machines/{mid}.json",encoding="UTF-8")as f:
             return json.load(f)
@@ -18,13 +21,13 @@ def read_user(mid):
         raise
     except json.JSONDecodeError:
         raise
-@app.get("/")
+@app.get("/test_upload", response_class=HTMLResponse)
 async def read_index():
-    return FileResponse('index.html')
+    return templates.TemplateResponse('test_upload.html',context={})
 
 @app.get("/config/{mid}")
 async def config(mid:int):
-    return {"machine":mid,"config":read_user(mid)}
+    return {"machine":mid,"config":read_machine(mid)}
 
 @app.post("/analyse")
 async def create_upload_file(image: UploadFile):
