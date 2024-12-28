@@ -5,7 +5,7 @@ from PIL import Image
 from determine import determine
 import numpy as np
 
-def analyse(img:Image.Image,options:list|None=None):
+def analyse(img:Image.Image,options:list|None=None,types:list|None=None):
     print(f"Start:{time.time()}")
     pills=segment_and_separate(img)
     print(f"Segment&Sep:{time.time()}")
@@ -22,6 +22,8 @@ def analyse(img:Image.Image,options:list|None=None):
     pills_dict={}
     for pill in pills:
         pill_type=determine(pill,options)
+        if types!=None:
+            types.append(pill_type)
         pills_dict[pill_type]=pills_dict.get(pill_type,0)+1
     print(f"Determine:{time.time()}")
     return pills_dict

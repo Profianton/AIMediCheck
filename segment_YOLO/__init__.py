@@ -31,7 +31,7 @@ def segment_and_separate(img: Image.Image):
     """
     
     results = model(img,conf=0.93)  # predict on an image
-    results[0].save('image.png')
+    results[0].save('static/image.png')
     imgs = []
     for mask in results[0].masks.data:
         mask = np.array(mask)

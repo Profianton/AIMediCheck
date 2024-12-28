@@ -10,16 +10,18 @@ def reload_url():
     
 
 threading.Thread(target=reload_url).start()
+with open("mid")as f:
+    mid=int(f.read())
 
 def analyse(img):
     while not url:
         pass
     img_byte_arr = io.BytesIO()
-    img.save(img_byte_arr, format='PNG')
+    img.save(img_byte_arr, format='PNG', compress_level = 1)
     img_byte_arr.seek(0)
 
     files = {'image': img_byte_arr}
-    r = requests.post(f"{url}/analyse", files=files)
+    r = requests.post(f"{url}/analyse",data={"mid":mid}, files=files)
     try:
         return r.json()
     except:

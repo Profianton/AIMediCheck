@@ -9,7 +9,7 @@ os.environ["LIBCAMERA_LOG_LEVELS"] = "*:3" #Unterdrückt Textausgabe der Kamera
 picam2 = Picamera2()
 capture_config = picam2.create_still_configuration()
 picam2.start()
-picam2.set_controls({"AfMode": controls.AfModeEnum.Manual, "LensPosition": 12}) #Fokus setzen
+picam2.set_controls({"AfMode": controls.AfModeEnum.Manual, "LensPosition": 11.44}) #Fokus setzen
 
 def capture():
     """Bild aufnehmen und zuschneiden
