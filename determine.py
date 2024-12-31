@@ -7,6 +7,8 @@ import threading
 
 determine_dat={}
 def reload():
+    """Bilder neu laden
+    """
     imgs=glob("classify_data/*/*.png")            # Bekannte Bilder werden eingelesen
     local_determine_dat={}
     for img_path in imgs:
@@ -15,7 +17,7 @@ def reload():
     global determine_dat
     determine_dat=local_determine_dat
 
-threading.Thread(target=reload).start()
+threading.Thread(target=reload).start()            # Bilder werden im Hintergrund geladen
 
 def determine(img,options:list|None=None):
     """Tablettenbestimmung

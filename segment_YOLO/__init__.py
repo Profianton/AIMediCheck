@@ -12,11 +12,8 @@ from bounding_box import bounding_box
 
 
 
-# Load a model
-model = YOLO(r'segment_YOLO\trained.pt')  # load a pretrained model
-
-# img = Image.open(
-#     r'yolov8\test\images\23_png.rf.f870d8d75eedb53cf4da43018381364d.jpg')
+# Modell laden
+model = YOLO(r'segment_YOLO\trained.pt')  
 
 mask_mask=np.logical_not(np.array(Image.open("mask.png").convert("L")).astype(bool))
 
@@ -33,6 +30,8 @@ def segment_and_separate(img: Image.Image):
     results = model(img,conf=0.93)  # predict on an image
     results[0].save('static/image.png')
     imgs = []
+    if not results[0].masks:        # keine Tabletten vorhanden
+        return []
     for mask in results[0].masks.data:
         mask = np.array(mask)
         
