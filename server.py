@@ -16,7 +16,8 @@ from analyse import analyse
 from segment_YOLO import segment_and_separate
 from orient_pills import orient_pills
 from datetime import datetime
-
+import determine
+import threading
 app = FastAPI()
 
 server_session_state = defaultdict(dict)
@@ -73,6 +74,7 @@ def add_pill(request: Request,  mid: int, name: str | None = None):
         write_machine(mid, config)
         server_session_state[mid]["add"] = False
         server_session_state[mid]["add_imgs"] = []
+        threading.Thread(target=determine.reload).start()
         return RedirectResponse(f"/config/{mid}")
 
     server_session_state[mid]["add"] = True
@@ -122,12 +124,12 @@ def get_current_plan(mid):
 @app.post("/analyse")
 def analyse_endpoint(image: UploadFile, mid: int = Form()):
     img = Image.open(io.BytesIO(image.file.read()))
-    img.save("static/image.png")
+    img.save("static/orig_image.png")
     if server_session_state[mid].get("add", False):
         handle_add_pill_file_upload(img, mid)
         return {"pills": {}, "match": True, "status": 200}
     types = []
-    pills_in_sample = analyse(img, types=types)
+    pills_in_sample = analyse(img,options=read_machine(mid)["tabletten"], types=types)
     out_img = Image.new("RGB", (img.width, int(img.height/8)))
     out_img.paste(img.resize((int(img.width/8), int(img.height/8))), (0, 0))
     for i in range(sum(pills_in_sample.values())):

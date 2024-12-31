@@ -1,8 +1,1 @@
-{
-	"tabletten": ["gelb_rund", "pink", "rot", "Bunt"],
-	"plaene": {
-		"10:00": { "gelb_rund": 1, "pink": 5, "rot": 1 },
-		"12:00": { "gelb_rund": 2, "pink": 1, "rot": 1 },
-		"18:00": { "rot": 3 }
-	}
-}
+{"tabletten": ["gelb_rund", "pink", "rot"], "plaene": {"10:00": {"gelb_rund": 1, "pink": 5, "rot": 1}, "12:00": {"Bunt": 1, "unknown": 2, "gelb_rund": 0, "rot": 1}, "18:00": {"rot": 3}}}
