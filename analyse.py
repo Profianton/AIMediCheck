@@ -6,6 +6,15 @@ from determine import determine
 import numpy as np
 
 def analyse(img:Image.Image,options:list|None=None,types:list|None=None):
+    """Analyse eines Bildes
+    Args:
+        img (Image.Image): Bild mit Tablette
+        options (list | None, optional): Mögliche Namen der Tabletten
+        types (list | None, optional): Namen der einzelnen Tabletten in der richtigen Reihenfolge (Ausgabe)
+
+    Returns:
+        dict[str:int]: Namen der Tabletten mit Anzahl der Tabletten im Bild 
+    """
     print(f"Start:{time.time()}")
     pills=segment_and_separate(img)
     print(f"Segment&Sep:{time.time()}")

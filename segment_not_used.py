@@ -1,4 +1,4 @@
-from .ai import segment as segment_core
+from .ai_not_used import segment as segment_core
 from scipy.optimize import linear_sum_assignment
 import cv2
 from scipy import ndimage

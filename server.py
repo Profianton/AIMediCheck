@@ -1,4 +1,3 @@
-import string
 from starlette.responses import FileResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
@@ -12,12 +11,15 @@ from PIL import Image, ImageDraw, ImageFont
 import io
 import json
 from glob import glob
+from datetime import datetime
+import threading
+
+
+import determine
 from analyse import analyse
 from segment_YOLO import segment_and_separate
 from orient_pills import orient_pills
-from datetime import datetime
-import determine
-import threading
+
 app = FastAPI()
 
 server_session_state = defaultdict(dict)
@@ -27,6 +29,14 @@ templates = Jinja2Templates(directory="templates")
 
 
 def read_machine(mid):
+    """Lese die Konfigurationsdatei der Maschine 
+
+    Args:
+        mid (int): ID der Maschine 
+
+    Returns:
+        dict: Konfiguration der Maschine
+    """
     try:
         with open(f"machines/{mid}.json", encoding="UTF-8")as f:
             return json.load(f)
@@ -37,18 +47,30 @@ def read_machine(mid):
 
 
 def write_machine(mid, config):
+    """Schreibt die Maschinenkonfigdatei
+
+    Args:
+        mid (int): ID der Maschine
+        config (dict): Konfiguration der Maschine
+    """
     with open(f"machines/{mid}.json", "w", encoding="UTF-8")as f:
         json.dump(config, f)
 
 
 @app.get("/preview", name="preview")
-def preview(tablette):
+def preview(tablette: str):
     return FileResponse(glob(f"classify_data/{tablette}/*")[0])
 
 
 @app.get("/config/{mid}")
 def config(request: Request, mid: int):
-    return templates.TemplateResponse('config.html', context={"request": request, "mid": mid, "config": read_machine(mid), "num_cols": len(read_machine(mid)["plaene"])+1})
+    return templates.TemplateResponse('config.html',
+            context={
+                "request": request,
+                "mid": mid,
+                "config": read_machine(mid),
+                "num_cols": len(read_machine(mid)["plaene"])+1
+                })
 
 
 @app.get("/config/{mid}/update")
@@ -61,6 +83,16 @@ def update(request: Request, mid: int, time: str, tablette: str, value: int):
 
 @app.get("/config/{mid}/add")
 def add_pill(request: Request,  mid: int, name: str | None = None):
+    """Funktion, die neue Tablette anlegt
+
+    Args:
+        request (Request): Anfrage
+        mid (int): ID der Maschine
+        name (str | None, optional): Name der Tablette
+
+    Returns:
+        TemplateResponse|RedirectResponse: Antwort an den Client
+    """
     global server_session_state
     if (not "add_imgs" in server_session_state[mid].keys()) and (name not in os.listdir("classify_data")):
         name = ""
@@ -84,7 +116,7 @@ def add_pill(request: Request,  mid: int, name: str | None = None):
 @app.get("/config/{mid}/add/get_imgs")
 def get_added_imgs(request: Request, mid: int):
     global server_session_state
-    ret = []
+    ret = [] #return-Value Data-URI 
 
     for img in server_session_state[mid].get("add_imgs", []):
         buffered = BytesIO()
@@ -97,6 +129,12 @@ def get_added_imgs(request: Request, mid: int):
 
 
 def handle_add_pill_file_upload(img, mid):
+    """fügt ein Bild in eine Liste im RAM hinzu wird verwendet um neue Tabletten anzulegen
+
+    Args:
+        img (Image.Image): Neues Bild von einer Tablette 
+        mid (int): ID der Maschine
+    """
     if not "add_imgs" in server_session_state[mid].keys():
         server_session_state[mid]["add_imgs"] = []
     server_session_state[mid]["add_imgs"] += orient_pills(
@@ -112,24 +150,43 @@ font = ImageFont.truetype(r"C:\Windows\Fonts\Arial.ttf", 20)
 
 
 def get_current_plan(mid):
+    """Liest den aktuellen Medikamentenplan basierend auf der Uhrzeit ein.
+
+    Args:
+        mid (int): Maschinen-ID
+
+    Returns:
+        dict[str:int]: Medikamentenplan für die aktuelle Uhrzeit
+    """
     machine = read_machine(mid)
     return machine["plaene"][min(machine["plaene"],
                                  key=lambda t: abs(
-                                     (int(t.split(":")[0])*60+int(t.split(":")[1]))
+                                     (int(t.split(":")[0]) *
+                                      60+int(t.split(":")[1]))
                                      -
                                      (datetime.now().hour*60+datetime.now().minute)
-                                     ))]
+    ))]
 
 
 @app.post("/analyse")
 def analyse_endpoint(image: UploadFile, mid: int = Form()):
+    """Client lädt Bild hoch
+
+    Args:
+        image (Image.Image): Bild mit Tabletten(mix)
+        mid (int): ID der Maschine
+
+    Returns:
+        dict: Antwort: Name der Tabletten und Übereinstimmung mit Medikamentenplan
+    """
     img = Image.open(io.BytesIO(image.file.read()))
     img.save("static/orig_image.png")
     if server_session_state[mid].get("add", False):
         handle_add_pill_file_upload(img, mid)
         return {"pills": {}, "match": True, "status": 200}
     types = []
-    pills_in_sample = analyse(img,options=read_machine(mid)["tabletten"], types=types)
+    pills_in_sample = analyse(img, options=read_machine(mid)[
+                              "tabletten"], types=types)
     out_img = Image.new("RGB", (img.width, int(img.height/8)))
     out_img.paste(img.resize((int(img.width/8), int(img.height/8))), (0, 0))
     for i in range(sum(pills_in_sample.values())):
@@ -141,4 +198,4 @@ def analyse_endpoint(image: UploadFile, mid: int = Form()):
                   name, (255, 255, 255), align="center")
     out_img.save("static/img.png")
 
-    return {"pills": pills_in_sample, "match": pills_in_sample==get_current_plan(mid)}
+    return {"pills": pills_in_sample, "match": pills_in_sample == get_current_plan(mid)}
