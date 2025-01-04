@@ -32,10 +32,10 @@ def orient_pill(pill,mask):
     rotated_mask = ndimage.rotate(mask, angle, reshape=True) 
     rotated_pill=pill.rotate(angle, expand=True).crop(bounding_box(rotated_mask))
     
-    #Zentrieren auf einem 1000x1000 Pixel Bild
+    #Zentrieren auf einem 250x250 Pixel Bild
     x_min, y_min, x_max, y_max=bounding_box(rotated_mask)
-    new=Image.new("RGB",(1000,1000))
-    new.paste(rotated_pill,(int(500-(x_max-x_min)/2),int(500-(y_max-y_min)/2)))
+    new=Image.new("RGB",(250,250))
+    new.paste(rotated_pill,(int(125-(x_max-x_min)/2),int(125-(y_max-y_min)/2)))
     return new
 
 def orient_pills(pills)->list[Image.Image]:

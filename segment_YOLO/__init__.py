@@ -30,6 +30,7 @@ def segment_and_separate(img: Image.Image):
     imgs = []
     if not results[0].masks:        # falls keine Tabletten vorhanden
         return []
+    img=img.resize(results[0].masks.data[0].shape[::-1])
     for mask in results[0].masks.data:
         mask = np.array(mask)
         
@@ -46,7 +47,7 @@ def segment_and_separate(img: Image.Image):
                 best_i=i
         mask=labeled_mask==best_i
         
-        mask=scale_array(mask,img.size[::-1]) # Maske auf Bildgröße hochskalieren
+        #mask=scale_array(mask,img.size[::-1]) # Maske auf Bildgröße hochskalieren
         
         img_np[np.logical_not(mask)] = [0, 0, 0] # alles was außerhalb der Tablette ist, wird schwarz gefärbt
         # Tablette ausschneiden
