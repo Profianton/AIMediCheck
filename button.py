@@ -1,5 +1,5 @@
 import RPi.GPIO as GPIO
-button_GPIO=19    # Button auf Pin 19 angeschlossen
+button_GPIO=24
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(button_GPIO, GPIO.IN,pull_up_down=GPIO.PUD_UP)
 

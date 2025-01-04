@@ -1,1 +1,29 @@
-{"tabletten": ["gelb_rund", "pink", "rot"], "plaene": {"10:00": {"gelb_rund": 1, "pink": 5, "rot": 1}, "12:00": {"Bunt": 1, "unknown": 2, "gelb_rund": 0, "rot": 1}, "18:00": {"rot": 3}}}
+{
+	"tabletten": [
+		"rot_l\u00e4nglich_doppelherz_VitaminB12CD3",
+		"dunkelgelb_rund_tetesept_Vitamin_D3_2000",
+		"hellgelb_rund_tetesept_Vitamin_D3_1700",
+		"wei\u00df_rund_Vitalis_Vitamin_D3_250",
+		"pink_rund_taxofit_Vitamin_B12_500",
+		"gelb_klar_oval_multinorm_omega3",
+		"gelb_milchig_oval_Soledum_Kapseln_forte"
+	],
+	"plaene": {
+		"10:00": {
+			"rot_l\u00e4nglich_doppelherz_VitaminB12CD3": 1,
+			"dunkelgelb_rund_tetesept_Vitamin_D3_2000": 1,
+			"hellgelb_rund_tetesept_Vitamin_D3_1700": 1,
+			"gelb_klar_oval_multinorm_omega3": 1
+		},
+		"12:00": {
+			"dunkelgelb_rund_tetesept_Vitamin_D3_2000": 1,
+			"hellgelb_rund_tetesept_Vitamin_D3_1700": 2,
+			"wei\u00df_rund_Vitalis_Vitamin_D3_250": 1
+		},
+		"18:00": {
+			"wei\u00df_rund_Vitalis_Vitamin_D3_250": 1,
+			"pink_rund_taxofit_Vitamin_B12_500": 2,
+			"gelb_milchig_oval_Soledum_Kapseln_forte": 1
+		}
+	}
+}

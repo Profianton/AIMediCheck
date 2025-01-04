@@ -20,6 +20,8 @@ from analyse import analyse
 from segment_YOLO import segment_and_separate
 from orient_pills import orient_pills
 
+
+
 app = FastAPI()
 
 server_session_state = defaultdict(dict)
@@ -64,12 +66,16 @@ def preview(tablette: str):
 
 @app.get("/config/{mid}")
 def config(request: Request, mid: int):
+    with open("pills_in_sample.json")as f:
+        pills_in_sample=json.load(f)
     return templates.TemplateResponse('config.html',
             context={
                 "request": request,
                 "mid": mid,
                 "config": read_machine(mid),
-                "num_cols": len(read_machine(mid)["plaene"])+1
+                "num_cols": len(read_machine(mid)["plaene"])+1,
+                "pills_in_sample":pills_in_sample["list"],
+                "match":pills_in_sample["match"]
                 })
 
 
@@ -159,14 +165,15 @@ def get_current_plan(mid):
         dict[str:int]: Medikamentenplan für die aktuelle Uhrzeit
     """
     machine = read_machine(mid)
-    return machine["plaene"][min(machine["plaene"],
+    plan=machine["plaene"][min(machine["plaene"],
                                  key=lambda t: abs(
                                      (int(t.split(":")[0]) *
                                       60+int(t.split(":")[1]))
                                      -
                                      (datetime.now().hour*60+datetime.now().minute)
     ))]
-
+    plan={k:v for k,v in plan.items() if v!=0}
+    return plan
 
 @app.post("/analyse")
 def analyse_endpoint(image: UploadFile, mid: int = Form()):
@@ -187,15 +194,16 @@ def analyse_endpoint(image: UploadFile, mid: int = Form()):
     types = []
     pills_in_sample = analyse(img, options=read_machine(mid)[
                               "tabletten"], types=types)
-    out_img = Image.new("RGB", (img.width, int(img.height/8)))
-    out_img.paste(img.resize((int(img.width/8), int(img.height/8))), (0, 0))
+    out_img = Image.new("RGB", (int((img.height/8)*len(types)), int(img.height/8)),(255,255,255))
     for i in range(sum(pills_in_sample.values())):
         out_img.paste(Image.open(f"{i}.png").resize(
-            (int(img.height/8), int(img.height/8))), (int(img.width/8)+int(img.height/8)*i, 0))
+            (int(img.height/8), int(img.height/8))), (int(img.height/8)*i, 0))
     draw = ImageDraw.Draw(out_img)
     for i, name in enumerate(types):
-        draw.text((int(img.width/8)+int(img.height/8)*(i+.5), 0),
+        draw.text((int(img.height/8)*(i), 0),
                   name, (255, 255, 255), align="center")
     out_img.save("static/img.png")
-
+    
+    with open("pills_in_sample.json","w")as f:
+        json.dump({"list":types,"match":pills_in_sample == get_current_plan(mid)},f)
     return {"pills": pills_in_sample, "match": pills_in_sample == get_current_plan(mid)}

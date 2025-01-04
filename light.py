@@ -1,17 +1,17 @@
 
 import RPi.GPIO as GPIO
-light_gpios = [13,26]
+light_gpio = 26
 
 
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(light_gpios, GPIO.OUT)
+GPIO.setup(light_gpio, GPIO.OUT)
 
 def on():
-    GPIO.output(light_gpios, True)
-        
+    GPIO.output(light_gpio, True)
+
 
 def off():
-    GPIO.output(light_gpios, False)
+    GPIO.output(light_gpio, False)
 
 
 on()
